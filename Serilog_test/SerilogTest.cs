@@ -23,5 +23,16 @@ namespace Serilog_test
             //    log.Warning("Goodbye, Serilog.");
             //}
         }
+
+        public void EmittingAndCllecting()
+        {
+            var itemNumber = 10;
+            var itemcount = 999;
+            //debug 부터 로그 남기기 설정
+            var log = new LoggerConfiguration().MinimumLevel.Debug().WriteTo.Console().CreateLogger();
+            //가로 안에 이름을 연동해서 쓸 수 있고 대소문자가 달라도 알아서 찾는다
+            log.Debug("Processing item {ItemNumber} of {ItemCount}", itemNumber, itemcount);
+            
+        }
     }
 }

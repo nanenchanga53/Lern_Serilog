@@ -12,8 +12,8 @@ namespace Serilog_test
         static void Main(string[] args)
         {
             SerilogTest logTest = new SerilogTest();
-            logTest.HelloSerilog();
-
+            //logTest.HelloSerilog();
+            logTest.EmittingAndCllecting();
 
         }
     }
