@@ -13,8 +13,8 @@ namespace Serilog_test
         {
             SerilogTest logTest = new SerilogTest();
             //logTest.HelloSerilog();
-            logTest.EmittingAndCllecting();
-
+            //logTest.EmittingAndCllecting();
+            logTest.JSONLogFileTest();
         }
     }
 }
