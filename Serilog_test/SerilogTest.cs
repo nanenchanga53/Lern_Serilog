@@ -10,7 +10,7 @@ namespace Serilog_test
 {
     class SerilogTest
     {
-        public void HelloSerilog()
+        internal void HelloSerilog()
         {
             var log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
             log.Information("hello, Serilog!");
@@ -23,6 +23,24 @@ namespace Serilog_test
             //    log.Information("hello, Serilog!");
             //    log.Warning("Goodbye, Serilog.");
             //}
+        }
+
+        /// <summary>
+        /// Serilog에서 제공해준 서버에 올려보기
+        /// https://getseq.net/Download 에서 다운
+        /// </summary>
+        internal void WritingLogServer()
+        {
+            var log = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Seq("http://localhost:5341")
+            .CreateLogger();
+
+            var itemCount = 99;
+            for (var itemNumber = 0; itemNumber < itemCount; ++itemNumber)
+                log.Debug("Processing item {ItemNumber} of {ItemCount}", itemNumber, itemCount);
+
+            log.Dispose();
         }
 
         /// <summary>
@@ -45,7 +63,7 @@ namespace Serilog_test
         /// <summary>
         /// Serilog의 포멧팅 
         /// </summary>
-        public void EmittingAndCllecting()
+        internal void EmittingAndCllecting()
         {
             var itemNumber = 10;
             var itemcount = 999;
