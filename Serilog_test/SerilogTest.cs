@@ -10,6 +10,8 @@ namespace Serilog_test
 {
     class SerilogTest
     {
+        private readonly ILogger _log = Log.ForContext<SerilogTest>();
+
         internal void HelloSerilog()
         {
             var log = new LoggerConfiguration().WriteTo.Console().CreateLogger();
@@ -31,14 +33,25 @@ namespace Serilog_test
         /// </summary>
         internal void WritingLogServer()
         {
+            
             var log = new LoggerConfiguration()
+            .Enrich.WithThreadId()                     //ThreadID를 포함할 수 있다 Install-Package Serilog.Enrichers.Thread
             .MinimumLevel.Debug()
+            .Enrich.WithProperty("Application","Demo")
             .WriteTo.Seq("http://localhost:5341")
             .CreateLogger();
 
             var itemCount = 99;
-            for (var itemNumber = 0; itemNumber < itemCount; ++itemNumber)
-                log.Debug("Processing item {ItemNumber} of {ItemCount}", itemNumber, itemCount);
+            //for (var itemNumber = 0; itemNumber < itemCount; ++itemNumber)
+            //    log.Debug("Processing item {ItemNumber} of {ItemCount}", itemNumber, itemCount);
+
+            //중간에 기본적으로 적을 정보를 추가할 수 있다.
+            var orderLog = log.ForContext("OrderId", 1);
+            orderLog.Information("Looking up product codes");
+            orderLog.Information("Product lookup took {Elapsed} ms", 1000);
+
+            
+
 
             log.Dispose();
         }
@@ -48,8 +61,10 @@ namespace Serilog_test
         /// </summary>
         internal void JSONLogFileTest()
         {
+            //jason으로 하나의 파일에 만드는 것이 아니라 하나의 jason 로그를 여러개 만드는 것이다.
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
+                .Enrich.WithProperty("Application", "Demo") //로그에 남길 추가 사항
                 .WriteTo.File(new CompactJsonFormatter(), "log.json")
                 .CreateLogger();
 
